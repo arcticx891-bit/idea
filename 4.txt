@@ -1,8 +1,12 @@
+import numpy as np
 import pandas as pd
 
 url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
 df = pd.read_csv(url)
 
-print("Dataset: Iris Flower Dataset")
-print("Source:", url)
-print(df.head())
+print("Dataset: Iris Flower Dataset (150 rows, 5 columns of sepal/petal measurements for 3 species)")
+print("Source URL:", url)
+print("\nFirst 5 rows:\n", df.head())
+print("\nShape:", df.shape)
+print("\nMissing values:\n", df.isnull().sum())
+print("\nSummary:\n", df.describe())
