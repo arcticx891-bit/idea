@@ -1,16 +1,16 @@
 import pandas as pd
 
-cols = ['ID', 'Name', 'Age', 'Gender', 'Grade', 'Location']
-data = [[1, 'Amit', 21, 'M', 'A', 'Nashik'],
-        [2, 'Riya', 23, 'F', 'B', 'Pune']]
+a = [['Ayush', 1, 25, 'M', 'A', 'Nashik'],
+      ['Shreya', 2, 21, 'F', 'A', 'Pune'],
+     ['Neel', 3, 23, 'M', 'A', 'Nashik']]
 
-df = pd.DataFrame(data, columns=cols)
-
-df.loc[2] = [3, 'Raj', 24, 'M', 'A', 'Mumbai']
+df = pd.DataFrame(a, columns=['Name', 'ID', 'AGE', 'Gender', 'Grade', 'Location'])
+df.loc[4]= ['Jes',4, 24, 'F', 'A', 'Nashik']
 df = df.drop(0)
 
-print("Age > 22:\n", df[df['Age'] > 22])
+print("Data for AGE > 22: \n", df[df['AGE'] > 22] )
 
-df2 = pd.DataFrame([[4, 'Neha', 22, 'F', 'A', 'Nashik']], columns=cols)
-df = pd.concat([df, df2])
-print("\nFinal Table:\n", df)
+b = [['Purva',4, 22, 'F', 'A', 'Pune']]
+df2 = pd.DataFrame(b, columns=['Name', 'ID', 'AGE', 'Gender', 'Grade', 'Location']) 
+df = pd.concat([df,df2])
+print("\n Final Data: \n", df)
