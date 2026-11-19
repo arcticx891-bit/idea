@@ -4,14 +4,16 @@ x = [1, 2, 3]
 y = [10, 20, 15]
 labels = ['A', 'B', 'C']
 
+plt.subplot(2, 2, 1)
 plt.plot(x, y)
-plt.show()
 
+plt.subplot(2, 2, 2)
 plt.bar(labels, y)
-plt.show()
 
+plt.subplot(2, 2, 3)
 plt.scatter(x, y)
-plt.show()
 
+plt.subplot(2, 2, 4)
 plt.pie(y, labels=labels)
+
 plt.show()

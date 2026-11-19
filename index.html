@@ -293,7 +293,7 @@ print("\nFinal Table:\n", df)</code></pre>
             </button>
           </div>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Generate 4 essential visualizations: Line plot (`plot`), Bar chart (`bar`), Scatter plot (`scatter`), and Pie chart (`pie`).</p>
+        <p class="text-sm text-slate-400 mb-4">Generate 4 essential visualizations in a single 2×2 figure: Line plot, Bar chart, Scatter plot, and Pie chart — all displayed together using <code class="text-blue-300 bg-slate-800/80 px-1 py-0.5 rounded text-xs">plt.subplot()</code>.</p>
         <div class="relative">
           <pre><code id="code-2b" class="language-python">import matplotlib.pyplot as plt
 
@@ -301,16 +301,18 @@ x = [1, 2, 3]
 y = [10, 20, 15]
 labels = ['A', 'B', 'C']
 
+plt.subplot(2, 2, 1)
 plt.plot(x, y)
-plt.show()
 
+plt.subplot(2, 2, 2)
 plt.bar(labels, y)
-plt.show()
 
+plt.subplot(2, 2, 3)
 plt.scatter(x, y)
-plt.show()
 
+plt.subplot(2, 2, 4)
 plt.pie(y, labels=labels)
+
 plt.show()</code></pre>
         </div>
       </section>
