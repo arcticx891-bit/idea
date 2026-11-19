@@ -1,199 +1,455 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MDM Practical Codes | Machine Learning & Data Mining Lab</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Prism.js Tomorrow Night Theme -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['Fira Code', 'monospace'],
-          },
-          colors: {
-            brand: {
-              50: '#eff6ff',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <title>MDM Practical Codes | Machine Learning Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
   <style>
-    pre[class*="language-"] {
-      background: #0f172a !important;
-      border-radius: 0.75rem;
-      margin: 0;
-      font-size: 0.875rem;
+    :root {
+      --black: #0a0a0a;
+      --white: #FFFEF5;
+      --yellow: #FFE03A;
+      --pink: #FF6BB5;
+      --blue: #4A90FF;
+      --lime: #BFFF3C;
+      --orange: #FF7A2F;
+      --purple: #B97FFF;
+      --teal: #3CFFE8;
+      --red: #FF3C3C;
+      --shadow: 4px 4px 0px var(--black);
+      --shadow-lg: 6px 6px 0px var(--black);
+      --border: 2.5px solid var(--black);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--white);
+      color: var(--black);
+      min-height: 100vh;
+    }
+
+    /* ─── NAVBAR ─── */
+    header {
+      background: var(--yellow);
+      border-bottom: var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--black);
+    }
+    .logo-box {
+      width: 42px; height: 42px;
+      background: var(--black);
+      color: var(--yellow);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px;
+      border: var(--border);
+      box-shadow: var(--shadow);
+      flex-shrink: 0;
+    }
+    .logo-text h1 { font-size: 17px; font-weight: 800; line-height: 1; }
+    .logo-text p { font-size: 11px; font-weight: 500; color: #444; }
+
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .search-wrap { position: relative; }
+    .search-wrap input {
+      background: var(--white);
+      border: var(--border);
+      box-shadow: var(--shadow);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 12px 8px 34px;
+      border-radius: 0;
+      outline: none;
+      width: 200px;
+    }
+    .search-wrap input:focus { box-shadow: 5px 5px 0 var(--black); }
+    .search-icon {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      font-size: 14px;
+    }
+    .btn-gh {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--black); color: var(--white);
+      border: var(--border); box-shadow: var(--shadow);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px; font-weight: 700;
+      padding: 8px 14px; cursor: pointer;
+      text-decoration: none;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .btn-gh:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow-lg); }
+    .btn-gh:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--black); }
+
+    /* ─── LAYOUT ─── */
+    .layout {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      display: flex;
+      gap: 28px;
+    }
+
+    /* ─── SIDEBAR ─── */
+    aside {
+      width: 260px;
+      flex-shrink: 0;
+    }
+    .sidebar-inner {
+      position: sticky;
+      top: 88px;
+      border: var(--border);
+      box-shadow: var(--shadow-lg);
+      background: #fff;
+      overflow: hidden;
+    }
+    .sidebar-title {
+      background: var(--black);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 10px 16px;
+    }
+    nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--black);
+      border-bottom: 1.5px solid #e5e5e5;
+      transition: background .12s;
+      gap: 8px;
+    }
+    nav a:last-child { border-bottom: none; }
+    nav a:hover { background: var(--yellow); }
+    nav a span.tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border: 1.5px solid var(--black);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ─── MAIN ─── */
+    main { flex: 1; min-width: 0; }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: var(--lime);
+      border: var(--border);
+      box-shadow: var(--shadow-lg);
+      padding: 36px 32px;
+      margin-bottom: 28px;
+    }
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .hero-eyebrow span {
+      background: var(--black); color: var(--lime);
+      padding: 2px 10px; font-family: 'Space Mono', monospace;
+    }
+    .hero h2 { font-size: 32px; font-weight: 800; line-height: 1.1; margin-bottom: 10px; }
+    .hero p { font-size: 15px; font-weight: 500; color: #222; max-width: 600px; line-height: 1.6; }
+    .hero-badges {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;
+    }
+    .badge {
+      background: var(--white);
+      border: var(--border);
+      box-shadow: 3px 3px 0 var(--black);
+      font-size: 12px; font-weight: 700;
+      padding: 5px 12px;
+    }
+
+    /* ─── PRACTICAL CARD ─── */
+    .practical-card {
+      border: var(--border);
+      box-shadow: var(--shadow-lg);
+      background: #fff;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 18px 22px;
+      border-bottom: var(--border);
+    }
+    .card-header-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .prac-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; font-weight: 700;
+      padding: 4px 10px;
+      border: 2px solid var(--black);
+    }
+    .prac-title {
+      font-size: 16px; font-weight: 800;
+    }
+    .tech-tag {
+      font-size: 11px; font-weight: 700;
+      padding: 3px 9px;
+      border: 1.5px solid var(--black);
+      background: var(--white);
+    }
+    .card-actions { display: flex; gap: 8px; }
+    .btn-copy, .btn-dl {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px; font-weight: 700;
+      padding: 7px 13px;
+      border: 2px solid var(--black);
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .1s, box-shadow .1s;
+    }
+    .btn-copy {
+      background: var(--blue); color: var(--white);
+      box-shadow: 3px 3px 0 var(--black);
+    }
+    .btn-copy:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--black); }
+    .btn-copy:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 var(--black); }
+    .btn-dl {
+      background: var(--white); color: var(--black);
+      box-shadow: 3px 3px 0 var(--black);
+    }
+    .btn-dl:hover { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--black); background: #f0f0f0; }
+
+    .card-desc {
+      padding: 14px 22px;
+      font-size: 13px; font-weight: 500; color: #444;
       line-height: 1.6;
+      border-bottom: var(--border);
+      background: var(--white);
+    }
+    .card-desc code {
+      font-family: 'Space Mono', monospace;
+      background: #eee;
+      padding: 1px 5px;
+      border: 1px solid #ccc;
+      font-size: 11px;
+    }
+
+    .code-wrap { padding: 0; background: #f5f5f5; }
+    pre[class*="language-"] {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      background: #f8f8f2 !important;
+      border: none !important;
+      font-size: 13px !important;
+      line-height: 1.65 !important;
+      max-height: 400px;
+      overflow-y: auto;
     }
     code[class*="language-"] {
-      font-family: 'Fira Code', monospace !important;
+      font-family: 'Space Mono', monospace !important;
     }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
+
+    /* Color overrides per card type */
+    .card-numpy .prac-badge { background: var(--blue); color: #fff; }
+    .card-pandas .prac-badge { background: var(--purple); color: #fff; }
+    .card-plot .prac-badge { background: var(--pink); color: #fff; }
+    .card-stat .prac-badge { background: var(--orange); color: #fff; }
+    .card-data .prac-badge { background: var(--teal); color: var(--black); }
+    .card-ml .prac-badge { background: var(--lime); color: var(--black); }
+    .card-cls .prac-badge { background: var(--red); color: #fff; }
+    .card-virt .prac-badge { background: var(--black); color: var(--yellow); }
+
+    .card-numpy .card-header { background: #EAF3FF; }
+    .card-pandas .card-header { background: #F5EEFF; }
+    .card-plot .card-header { background: #FFF0F8; }
+    .card-stat .card-header { background: #FFF5ED; }
+    .card-data .card-header { background: #EAFFFE; }
+    .card-ml .card-header { background: #F5FFD6; }
+    .card-cls .card-header { background: #FFF0F0; }
+    .card-virt .card-header { background: var(--yellow); }
+
+    /* ─── VIRTUAL LAB CARD ─── */
+    .vlab-body {
+      padding: 22px;
     }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #0f172a;
+    .vlab-steps {
+      background: var(--white);
+      border: var(--border);
+      box-shadow: 3px 3px 0 var(--black);
+      padding: 16px 20px;
+      margin-top: 14px;
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 3px;
+    .vlab-steps p { font-weight: 700; margin-bottom: 10px; font-size: 13px; }
+    .vlab-steps ol { padding-left: 20px; font-size: 13px; font-weight: 500; color: #333; line-height: 1.8; }
+    .btn-vlab {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--black); color: var(--yellow);
+      border: 2px solid var(--black);
+      box-shadow: 4px 4px 0 #555;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px; font-weight: 700;
+      padding: 10px 18px;
+      text-decoration: none;
+      transition: transform .1s, box-shadow .1s;
     }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #475569;
+    .btn-vlab:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #333; }
+
+    /* ─── TOAST ─── */
+    #toast {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: var(--black);
+      color: var(--lime);
+      border: 2px solid var(--black);
+      box-shadow: 5px 5px 0 var(--lime);
+      font-family: 'Space Mono', monospace;
+      font-size: 13px; font-weight: 700;
+      padding: 12px 20px;
+      display: flex; align-items: center; gap: 10px;
+      z-index: 999;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all .25s cubic-bezier(.34,1.56,.64,1);
+      pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: var(--border);
+      background: var(--black);
+      color: var(--yellow);
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: .05em;
+    }
+
+    @media (max-width: 900px) {
+      .layout { flex-direction: column; }
+      aside { width: 100%; }
+      .sidebar-inner { position: static; }
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans antialiased selection:bg-blue-600 selection:text-white">
+<body>
 
-  <!-- Toast Notification -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="bg-blue-600 text-white font-medium px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-blue-400/30">
-      <svg class="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-      <span id="toast-msg">Code copied to clipboard!</span>
+<!-- TOAST -->
+<div id="toast">✓ Code copied!</div>
+
+<!-- NAVBAR -->
+<header>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <div class="logo-box">MDM</div>
+      <div class="logo-text">
+        <h1>MDM Practicals Hub</h1>
+        <p>Machine Learning & Data Mining Lab</p>
+      </div>
+    </a>
+    <div class="nav-right">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search practicals...">
+      </div>
+      <a class="btn-gh" href="https://github.com/arcticx891-bit/idea" target="_blank" rel="noopener">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
     </div>
   </div>
+</header>
 
-  <!-- Header / Navbar -->
-  <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center font-bold text-lg text-white shadow-lg shadow-blue-500/20">
-          MDM
-        </div>
-        <div>
-          <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">MDM Practicals Hub</h1>
-          <p class="text-xs text-slate-400 hidden sm:block">Machine Learning & Data Mining Laboratory Codes</p>
-        </div>
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside>
+    <div class="sidebar-inner">
+      <div class="sidebar-title">📋 Table of Contents</div>
+      <nav id="navLinks">
+        <a href="#prac-1a"><span>1(a) NumPy Properties</span><span class="tag">1a.txt</span></a>
+        <a href="#prac-1b"><span>1(b) NumPy Slicing</span><span class="tag">1b.txt</span></a>
+        <a href="#prac-2a"><span>2(a) Pandas DataFrame</span><span class="tag">2a.txt</span></a>
+        <a href="#prac-2b"><span>2(b) Matplotlib Plots</span><span class="tag">2b.txt</span></a>
+        <a href="#prac-3a"><span>3(a) Scatter Correlations</span><span class="tag">3a.txt</span></a>
+        <a href="#prac-3b"><span>3(b) Pearson Coefficient</span><span class="tag">3b.txt</span></a>
+        <a href="#prac-4"><span>4. Load Dataset</span><span class="tag">4.txt</span></a>
+        <a href="#prac-5"><span>5. Linear Regression</span><span class="tag">5.txt</span></a>
+        <a href="#prac-6"><span>6. Logistic Regression</span><span class="tag">6.txt</span></a>
+        <a href="#prac-7"><span>7. CART Decision Tree</span><span class="tag">7.txt</span></a>
+        <a href="#prac-8"><span>8. Virtual Lab (IIT-R)</span><span class="tag">🌐</span></a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main id="practicalContainer">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-eyebrow">
+        <span>SPPU Lab Curriculum</span>
+        10 Practicals · Python · Ready to Run
       </div>
-
-      <div class="flex items-center gap-3">
-        <!-- Search bar -->
-        <div class="relative w-48 sm:w-64">
-          <input type="text" id="searchInput" placeholder="Search practicals..." 
-                 class="w-full bg-slate-800/80 text-sm text-slate-200 placeholder-slate-400 pl-9 pr-3 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
-          <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        </div>
-
-        <!-- GitHub Link Button -->
-        <a id="repoLink" href="https://github.com/neelrathi87-dot/mdm" target="_blank" rel="noopener"
-           class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-medium px-3.5 py-1.5 rounded-lg border border-slate-700 transition">
-          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          <span class="hidden sm:inline">GitHub</span>
-        </a>
+      <h2>Machine Learning &<br>Data Mining Lab Codes</h2>
+      <p>Clean, verified Python scripts for all MDM practicals. Syntax highlighted, copy-ready, and downloadable as raw <code>.txt</code> files.</p>
+      <div class="hero-badges">
+        <span class="badge">🐍 Python</span>
+        <span class="badge">🔢 NumPy</span>
+        <span class="badge">🐼 Pandas</span>
+        <span class="badge">📊 Matplotlib</span>
+        <span class="badge">🤖 Scikit-Learn</span>
       </div>
     </div>
-  </header>
 
-  <!-- Layout Container -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8">
-    
-    <!-- Sidebar Navigation -->
-    <aside class="lg:w-72 flex-shrink-0">
-      <div class="sticky top-24 bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-xl">
-        <h2 class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-3">Table of Contents</h2>
-        <nav class="space-y-1 text-sm max-h-[75vh] overflow-y-auto custom-scrollbar" id="navLinks">
-          <a href="#prac-1a" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">1(a) NumPy Array Properties</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">1a.txt</span>
-          </a>
-          <a href="#prac-1b" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">1(b) NumPy Array Slicing</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">1b.txt</span>
-          </a>
-          <a href="#prac-2a" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">2(a) Pandas Student DataFrame</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">2a.txt</span>
-          </a>
-          <a href="#prac-2b" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">2(b) Matplotlib Basic Plots</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">2b.txt</span>
-          </a>
-          <a href="#prac-3a" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">3(a) Correlation Scatter Plots</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">3a.txt</span>
-          </a>
-          <a href="#prac-3b" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">3(b) Pearson Correlation Coeff.</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">3b.txt</span>
-          </a>
-          <a href="#prac-4" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">4. Load Dataset (Iris)</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">4.txt</span>
-          </a>
-          <a href="#prac-5" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">5. Linear Regression</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">5.txt</span>
-          </a>
-          <a href="#prac-6" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">6. Logistic Regression</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">6.txt</span>
-          </a>
-          <a href="#prac-7" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">7. CART Decision Tree</span>
-            <span class="text-xs bg-slate-800 group-hover:bg-slate-700 text-slate-400 px-2 py-0.5 rounded">7.txt</span>
-          </a>
-          <a href="#prac-8" class="flex items-center justify-between px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition group">
-            <span class="truncate">8. Virtual Lab (IIT Roorkee)</span>
-            <span class="text-xs bg-emerald-900/50 text-emerald-400 px-2 py-0.5 rounded border border-emerald-700/50">Info</span>
-          </a>
-        </nav>
-      </div>
-    </aside>
-
-    <!-- Main Content Stream -->
-    <main class="flex-1 min-w-0 space-y-8" id="practicalContainer">
-
-      <!-- Hero Banner -->
-      <div class="bg-gradient-to-r from-blue-900/40 via-indigo-900/20 to-slate-900 border border-blue-500/30 rounded-2xl p-6 sm:p-8">
-        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400 mb-2">
-          <span>SPPU / Engineering Lab Curriculum</span>
-          <span>•</span>
-          <span>Ready to Run</span>
+    <!-- ── PRACTICAL 1a ── -->
+    <div id="prac-1a" class="practical-card card-numpy">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 1(a)</span>
+          <span class="tech-tag">NumPy</span>
+          <span class="prac-title">NumPy Array Properties</span>
         </div>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Machine Learning & Data Mining Practicals</h2>
-        <p class="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
-          Clean, verified Python scripts for laboratory experiments. View the code with syntax highlighting, copy it instantly, or download the original raw <code class="text-blue-300 bg-slate-800/80 px-1.5 py-0.5 rounded">.txt</code> files.
-        </p>
-      </div>
-
-      <!-- PRACTICAL 1(a) -->
-      <section id="prac-1a" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-blue-500/20 text-blue-400 border border-blue-500/30">Practical 1(a)</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">NumPy</span>
-            <h3 class="text-lg font-bold text-white">NumPy Array Properties</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="1a.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>1a.txt</span>
-            </a>
-            <button onclick="copyCode('code-1a')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+        <div class="card-actions">
+          <a href="1a.txt" download class="btn-dl">⬇ 1a.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-1a')">⧉ Copy</button>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Demonstrate array properties: data type (`dtype`), dimensions (`ndim`), shape (`shape`), and total number of elements (`size`).</p>
-        <div class="relative">
-          <pre><code id="code-1a" class="language-python">import numpy as np
+      </div>
+      <div class="card-desc">Demonstrate array properties: data type (<code>dtype</code>), dimensions (<code>ndim</code>), shape (<code>shape</code>), and total elements (<code>size</code>).</div>
+      <div class="code-wrap">
+        <pre><code id="code-1a" class="language-python">import numpy as np
 
 a = np.array([[1, 2], [3, 4]])
 
@@ -201,61 +457,49 @@ print("Type:", a.dtype)
 print("Shape:", a.shape)
 print("Dimension:", a.ndim)
 print("Size:", a.size)</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 1(b) -->
-      <section id="prac-1b" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-blue-500/20 text-blue-400 border border-blue-500/30">Practical 1(b)</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">NumPy</span>
-            <h3 class="text-lg font-bold text-white">NumPy Array Slicing</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="1b.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>1b.txt</span>
-            </a>
-            <button onclick="copyCode('code-1b')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 1b ── -->
+    <div id="prac-1b" class="practical-card card-numpy">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 1(b)</span>
+          <span class="tech-tag">NumPy</span>
+          <span class="prac-title">NumPy Array Slicing</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Perform indexing and slicing across rows and columns of a 2D matrix array.</p>
-        <div class="relative">
-          <pre><code id="code-1b" class="language-python">import numpy as np
+        <div class="card-actions">
+          <a href="1b.txt" download class="btn-dl">⬇ 1b.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-1b')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Perform indexing and slicing across rows and columns of a 2D matrix.</div>
+      <div class="code-wrap">
+        <pre><code id="code-1b" class="language-python">import numpy as np
 
 a = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
 print("Row slice:\n", a[0:2, :])
 print("Column slice:\n", a[:, 1:3])</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 2(a) -->
-      <section id="prac-2a" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">Practical 2(a)</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Pandas</span>
-            <h3 class="text-lg font-bold text-white">Pandas DataFrame (Student Records)</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="2a.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>2a.txt</span>
-            </a>
-            <button onclick="copyCode('code-2a')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 2a ── -->
+    <div id="prac-2a" class="practical-card card-pandas">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 2(a)</span>
+          <span class="tech-tag">Pandas</span>
+          <span class="prac-title">Pandas DataFrame (Student Records)</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Create student DataFrame, add new records with `.loc`, drop rows with `.drop()`, filter records (`Age > 22`), and concatenate multiple tables.</p>
-        <div class="relative">
-          <pre><code id="code-2a" class="language-python">import pandas as pd
+        <div class="card-actions">
+          <a href="2a.txt" download class="btn-dl">⬇ 2a.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-2a')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Create student DataFrame, add rows with <code>.loc</code>, drop with <code>.drop()</code>, filter (<code>Age &gt; 22</code>), and concatenate tables with <code>pd.concat()</code>.</div>
+      <div class="code-wrap">
+        <pre><code id="code-2a" class="language-python">import pandas as pd
 
 cols = ['ID', 'Name', 'Age', 'Gender', 'Grade', 'Location']
 data = [[1, 'Amit', 21, 'M', 'A', 'Nashik'],
@@ -271,31 +515,25 @@ print("Age > 22:\n", df[df['Age'] > 22])
 df2 = pd.DataFrame([[4, 'Neha', 22, 'F', 'A', 'Nashik']], columns=cols)
 df = pd.concat([df, df2])
 print("\nFinal Table:\n", df)</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 2(b) -->
-      <section id="prac-2b" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-500/20 text-pink-400 border border-pink-500/30">Practical 2(b)</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Matplotlib</span>
-            <h3 class="text-lg font-bold text-white">Basic Plots Using Matplotlib</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="2b.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>2b.txt</span>
-            </a>
-            <button onclick="copyCode('code-2b')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 2b ── -->
+    <div id="prac-2b" class="practical-card card-plot">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 2(b)</span>
+          <span class="tech-tag">Matplotlib</span>
+          <span class="prac-title">Basic Plots Using Matplotlib</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Generate 4 essential visualizations in a single 2×2 figure: Line plot, Bar chart, Scatter plot, and Pie chart — all displayed together using <code class="text-blue-300 bg-slate-800/80 px-1 py-0.5 rounded text-xs">plt.subplot()</code>.</p>
-        <div class="relative">
-          <pre><code id="code-2b" class="language-python">import matplotlib.pyplot as plt
+        <div class="card-actions">
+          <a href="2b.txt" download class="btn-dl">⬇ 2b.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-2b')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Generate 4 essential visualizations in a single 2×2 figure using <code>plt.subplot()</code>: Line, Bar, Scatter, and Pie charts.</div>
+      <div class="code-wrap">
+        <pre><code id="code-2b" class="language-python">import matplotlib.pyplot as plt
 
 x = [1, 2, 3]
 y = [10, 20, 15]
@@ -314,31 +552,25 @@ plt.subplot(2, 2, 4)
 plt.pie(y, labels=labels)
 
 plt.show()</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 3(a) -->
-      <section id="prac-3a" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-500/20 text-pink-400 border border-pink-500/30">Practical 3(a)</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Statistics</span>
-            <h3 class="text-lg font-bold text-white">Correlation Scatter Plots (All 3 Types)</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="3a.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>3a.txt</span>
-            </a>
-            <button onclick="copyCode('code-3a')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 3a ── -->
+    <div id="prac-3a" class="practical-card card-stat">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 3(a)</span>
+          <span class="tech-tag">Statistics</span>
+          <span class="prac-title">Correlation Scatter Plots (All 3 Types)</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Display positive correlation, negative correlation, and zero correlation between study hours and exam performance.</p>
-        <div class="relative">
-          <pre><code id="code-3a" class="language-python">import matplotlib.pyplot as plt
+        <div class="card-actions">
+          <a href="3a.txt" download class="btn-dl">⬇ 3a.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-3a')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Visualize positive, negative, and zero correlation between study hours and exam scores using scatter plots.</div>
+      <div class="code-wrap">
+        <pre><code id="code-3a" class="language-python">import matplotlib.pyplot as plt
 
 hours = [1, 2, 3, 4]
 
@@ -353,31 +585,25 @@ plt.show()
 plt.scatter(hours, [20, 40, 15, 35])
 plt.title("Zero Correlation")
 plt.show()</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 3(b) -->
-      <section id="prac-3b" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-pink-500/20 text-pink-400 border border-pink-500/30">Practical 3(b)</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Correlation</span>
-            <h3 class="text-lg font-bold text-white">Pearson Correlation Coefficient & Graph</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="3b.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>3b.txt</span>
-            </a>
-            <button onclick="copyCode('code-3b')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 3b ── -->
+    <div id="prac-3b" class="practical-card card-stat">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 3(b)</span>
+          <span class="tech-tag">Correlation</span>
+          <span class="prac-title">Pearson Correlation Coefficient & Graph</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Compute the Pearson correlation coefficient matrix using Pandas `df.corr()` and visualize the relationship on a scatter plot.</p>
-        <div class="relative">
-          <pre><code id="code-3b" class="language-python">import pandas as pd
+        <div class="card-actions">
+          <a href="3b.txt" download class="btn-dl">⬇ 3b.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-3b')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Compute Pearson correlation coefficient matrix using <code>df.corr()</code> and visualize the relationship on a scatter plot.</div>
+      <div class="code-wrap">
+        <pre><code id="code-3b" class="language-python">import pandas as pd
 import matplotlib.pyplot as plt
 
 df = pd.DataFrame({'Hours': [1, 2, 3, 4], 'Scores': [50, 60, 70, 80]})
@@ -386,31 +612,25 @@ print(df.corr())
 
 plt.scatter(df['Hours'], df['Scores'])
 plt.show()</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 4 -->
-      <section id="prac-4" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-teal-500/20 text-teal-400 border border-teal-500/30">Practical 4</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Data Ingestion</span>
-            <h3 class="text-lg font-bold text-white">Load Open-Source Dataset into Pandas</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="4.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>4.txt</span>
-            </a>
-            <button onclick="copyCode('code-4')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 4 ── -->
+    <div id="prac-4" class="practical-card card-data">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 4</span>
+          <span class="tech-tag">Data Ingestion</span>
+          <span class="prac-title">Load Open-Source Dataset into Pandas</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Download and load an open-source CSV directly via URL (Iris Flower Dataset) and print the first 5 records with `.head()`.</p>
-        <div class="relative">
-          <pre><code id="code-4" class="language-python">import pandas as pd
+        <div class="card-actions">
+          <a href="4.txt" download class="btn-dl">⬇ 4.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-4')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Download and load the Iris Flower Dataset directly via URL using <code>pd.read_csv()</code> and preview with <code>.head()</code>.</div>
+      <div class="code-wrap">
+        <pre><code id="code-4" class="language-python">import pandas as pd
 
 url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
 df = pd.read_csv(url)
@@ -418,31 +638,25 @@ df = pd.read_csv(url)
 print("Dataset: Iris Flower Dataset")
 print("Source:", url)
 print(df.head())</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 5 -->
-      <section id="prac-5" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-500/20 text-amber-400 border border-amber-500/30">Practical 5</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Scikit-Learn</span>
-            <h3 class="text-lg font-bold text-white">Linear Regression Model</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="5.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>5.txt</span>
-            </a>
-            <button onclick="copyCode('code-5')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 5 ── -->
+    <div id="prac-5" class="practical-card card-ml">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 5</span>
+          <span class="tech-tag">Scikit-Learn</span>
+          <span class="prac-title">Linear Regression Model</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Fit Linear Regression on advertisement expenditure vs. sales, predict sales for an expenditure of 7 lakhs, report slope & intercept, and plot the regression line.</p>
-        <div class="relative">
-          <pre><code id="code-5" class="language-python">import matplotlib.pyplot as plt
+        <div class="card-actions">
+          <a href="5.txt" download class="btn-dl">⬇ 5.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-5')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Fit Linear Regression on expenditure vs. sales data, predict sales for 7 lakhs, report slope & intercept, and plot the regression line.</div>
+      <div class="code-wrap">
+        <pre><code id="code-5" class="language-python">import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 X = [[2], [4], [6], [8], [10]]
@@ -458,31 +672,25 @@ print("Intercept:", model.intercept_)
 plt.scatter(X, Y)
 plt.plot(X, model.predict(X))
 plt.show()</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 6 -->
-      <section id="prac-6" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Practical 6</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Classification</span>
-            <h3 class="text-lg font-bold text-white">Logistic Regression Model (Social Network Ads)</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="6.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>6.txt</span>
-            </a>
-            <button onclick="copyCode('code-6')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 6 ── -->
+    <div id="prac-6" class="practical-card card-cls">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 6</span>
+          <span class="tech-tag">Classification</span>
+          <span class="prac-title">Logistic Regression (Social Network Ads)</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Binary classification on `Social_Network_Ads.csv`. Computes confusion matrix, TP, FP, TN, FN, Accuracy, Error Rate, Precision, and Recall.</p>
-        <div class="relative">
-          <pre><code id="code-6" class="language-python">import pandas as pd
+        <div class="card-actions">
+          <a href="6.txt" download class="btn-dl">⬇ 6.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-6')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Binary classification on <code>Social_Network_Ads.csv</code>. Outputs confusion matrix, TP, FP, TN, FN, Accuracy, Error Rate, Precision, and Recall.</div>
+      <div class="code-wrap">
+        <pre><code id="code-6" class="language-python">import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
@@ -510,31 +718,25 @@ print("Accuracy:", acc)
 print("Error Rate:", 1 - acc)
 print("Precision:", precision_score(y_test, y_pred))
 print("Recall:", recall_score(y_test, y_pred))</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 7 -->
-      <section id="prac-7" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-purple-500/20 text-purple-400 border border-purple-500/30">Practical 7</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Decision Trees</span>
-            <h3 class="text-lg font-bold text-white">Simple CART Classification Model (Iris Dataset)</h3>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="7.txt" download class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <span>7.txt</span>
-            </a>
-            <button onclick="copyCode('code-7')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-md shadow-blue-500/20 transition">
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-              <span>Copy</span>
-            </button>
-          </div>
+    <!-- ── PRACTICAL 7 ── -->
+    <div id="prac-7" class="practical-card card-cls">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 7</span>
+          <span class="tech-tag">Decision Trees</span>
+          <span class="prac-title">CART Classification Model (Iris Dataset)</span>
         </div>
-        <p class="text-sm text-slate-400 mb-4">Multi-class classification using DecisionTreeClassifier (CART) on Iris dataset with multi-class Confusion Matrix and macro-averaged Precision & Recall.</p>
-        <div class="relative">
-          <pre><code id="code-7" class="language-python">import numpy as np
+        <div class="card-actions">
+          <a href="7.txt" download class="btn-dl">⬇ 7.txt</a>
+          <button class="btn-copy" onclick="copyCode('code-7')">⧉ Copy</button>
+        </div>
+      </div>
+      <div class="card-desc">Multi-class classification using <code>DecisionTreeClassifier</code> (CART) on Iris dataset with confusion matrix and macro-averaged Precision & Recall.</div>
+      <div class="code-wrap">
+        <pre><code id="code-7" class="language-python">import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
@@ -562,89 +764,64 @@ print("Accuracy:", acc)
 print("Error Rate:", 1 - acc)
 print("Precision:", precision_score(y_test, y_pred, average='macro'))
 print("Recall:", recall_score(y_test, y_pred, average='macro'))</code></pre>
-        </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- PRACTICAL 8 (Virtual Lab) -->
-      <section id="prac-8" class="practical-card bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl transition-all hover:border-slate-700">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div class="flex items-center gap-3">
-            <span class="px-2.5 py-1 text-xs font-bold rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Practical 8</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-800 text-slate-300">Virtual Lab</span>
-            <h3 class="text-lg font-bold text-white">Linear Regression on Virtual Lab (IIT Roorkee)</h3>
-          </div>
-          <div>
-            <a href="https://ml-iitr.vlabs.ac.in/exp/linear-regression/procedure.html" target="_blank" rel="noopener"
-               class="inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg shadow-md shadow-emerald-500/20 transition">
-              <span>Open Virtual Lab</span>
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
-          </div>
+    <!-- ── PRACTICAL 8 ── -->
+    <div id="prac-8" class="practical-card card-virt">
+      <div class="card-header">
+        <div class="card-header-left">
+          <span class="prac-badge">Practical 8</span>
+          <span class="tech-tag">Virtual Lab</span>
+          <span class="prac-title">Linear Regression — IIT Roorkee Virtual Lab</span>
         </div>
-        <p class="text-sm text-slate-300 mb-2">
-          <strong>Note:</strong> Practical 8 does not require Python code. It is conducted interactively via the IIT Roorkee Machine Learning Virtual Lab portal.
-        </p>
-        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-2">
-          <p><strong>Steps to perform:</strong></p>
-          <ol class="list-decimal list-inside space-y-1">
-            <li>Open the simulation page linked above.</li>
-            <li>Configure the training dataset points or load the default sample data.</li>
-            <li>Adjust learning rate and iterations to observe slope / intercept convergence.</li>
-            <li>Export or take a screenshot of the resulting fitted linear regression line.</li>
+        <div class="card-actions">
+          <a href="https://ml-iitr.vlabs.ac.in/exp/linear-regression/procedure.html" target="_blank" rel="noopener" class="btn-vlab">🌐 Open Virtual Lab ↗</a>
+        </div>
+      </div>
+      <div class="vlab-body">
+        <p style="font-size:14px;font-weight:600;color:#333;">No Python code required — performed interactively on the IIT Roorkee ML Virtual Lab portal.</p>
+        <div class="vlab-steps">
+          <p>📋 Steps to perform:</p>
+          <ol>
+            <li>Open the simulation page via the button above.</li>
+            <li>Configure training dataset points or load default sample data.</li>
+            <li>Adjust learning rate and iterations to observe slope/intercept convergence.</li>
+            <li>Screenshot the final fitted regression line for your record.</li>
           </ol>
         </div>
-      </section>
+      </div>
+    </div>
 
-    </main>
-  </div>
+  </main>
+</div>
 
-  <!-- Footer -->
-  <footer class="mt-16 border-t border-slate-800 py-8 text-center text-xs text-slate-500">
-    <p>Machine Learning & Data Mining (MDM) Lab Codes Repository • Deployed via GitHub Pages</p>
-  </footer>
+<!-- FOOTER -->
+<footer>
+  MDM Practical Codes · Machine Learning & Data Mining Lab · Deployed via GitHub Pages
+</footer>
 
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-  <script>
-    // Copy code function
-    function copyCode(id) {
-      const codeElement = document.getElementById(id);
-      if (!codeElement) return;
-      const text = codeElement.innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast("Code copied to clipboard!");
-      }).catch(err => {
-        console.error("Failed to copy", err);
-      });
-    }
-
-    // Toast alert
-    function showToast(msg) {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script>
+  function copyCode(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    navigator.clipboard.writeText(el.innerText).then(() => {
       const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-msg');
-      toastMsg.innerText = msg;
-      toast.classList.remove('translate-y-20', 'opacity-0');
-      setTimeout(() => {
-        toast.classList.add('translate-y-20', 'opacity-0');
-      }, 2000);
-    }
-
-    // Live search filter
-    const searchInput = document.getElementById('searchInput');
-    const cards = document.querySelectorAll('.practical-card');
-
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      cards.forEach(card => {
-        const text = card.innerText.toLowerCase();
-        if (text.includes(query)) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
     });
-  </script>
+  }
+
+  // Live search
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', e => {
+    const q = e.target.value.toLowerCase().trim();
+    document.querySelectorAll('.practical-card').forEach(card => {
+      card.style.display = card.innerText.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+</script>
 </body>
 </html>
