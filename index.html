@@ -607,23 +607,23 @@ print("Column slice:\n", a[:, 1:3])</code></pre>
           <button class="btn-copy" onclick="copyCode('code-2a')">⧉ Copy</button>
         </div>
       </div>
-      <div class="card-desc">Create student DataFrame, add rows with <code>.loc</code>, drop with <code>.drop()</code>, filter (<code>Age &gt; 22</code>), and concatenate tables.</div>
+      <div class="card-desc">Create student DataFrame, add rows with <code>.loc</code>, drop with <code>.drop()</code>, filter (<code>AGE &gt; 22</code>), and concatenate tables.</div>
       <pre><code id="code-2a" class="language-python">import pandas as pd
 
-cols = ['ID', 'Name', 'Age', 'Gender', 'Grade', 'Location']
-data = [[1, 'Amit', 21, 'M', 'A', 'Nashik'],
-        [2, 'Riya', 23, 'F', 'B', 'Pune']]
+a = [['Ayush', 1, 25, 'M', 'A', 'Nashik'],
+      ['Shreya', 2, 21, 'F', 'A', 'Pune'],
+     ['Neel', 3, 23, 'M', 'A', 'Nashik']]
 
-df = pd.DataFrame(data, columns=cols)
-
-df.loc[2] = [3, 'Raj', 24, 'M', 'A', 'Mumbai']
+df = pd.DataFrame(a, columns=['Name', 'ID', 'AGE', 'Gender', 'Grade', 'Location'])
+df.loc[4]= ['Jes',4, 24, 'F', 'A', 'Nashik']
 df = df.drop(0)
 
-print("Age > 22:\n", df[df['Age'] > 22])
+print("Data for AGE > 22: \n", df[df['AGE'] > 22] )
 
-df2 = pd.DataFrame([[4, 'Neha', 22, 'F', 'A', 'Nashik']], columns=cols)
-df = pd.concat([df, df2])
-print("\nFinal Table:\n", df)</code></pre>
+b = [['Purva',4, 22, 'F', 'A', 'Pune']]
+df2 = pd.DataFrame(b, columns=['Name', 'ID', 'AGE', 'Gender', 'Grade', 'Location']) 
+df = pd.concat([df,df2])
+print("\n Final Data: \n", df)</code></pre>
     </div>
 
     <!-- PRACTICAL 2b -->
@@ -705,15 +705,20 @@ plt.show()</code></pre>
           <button class="btn-copy" onclick="copyCode('code-3b')">⧉ Copy</button>
         </div>
       </div>
-      <div class="card-desc">Compute Pearson correlation coefficient matrix using <code>df.corr()</code> and visualize the relationship on a scatter plot.</div>
-      <pre><code id="code-3b" class="language-python">import pandas as pd
+      <div class="card-desc">Compute Pearson correlation coefficient using <code>np.corrcoef()</code> and visualize the relationship on a scatter plot with axis labels.</div>
+      <pre><code id="code-3b" class="language-python">import numpy as np
 import matplotlib.pyplot as plt
 
-df = pd.DataFrame({'Hours': [1, 2, 3, 4], 'Scores': [50, 60, 70, 80]})
+hours = [1, 2, 3, 4]
+scores = [50, 60, 70, 80]
 
-print(df.corr())
+r = np.corrcoef(hours, scores)[0, 1]
+print("Pearson Correlation Coefficient:", r)
 
-plt.scatter(df['Hours'], df['Scores'])
+plt.scatter(hours, scores)
+plt.title("Hours Studied vs Test Scores")
+plt.xlabel("Hours")
+plt.ylabel("Scores")
 plt.show()</code></pre>
     </div>
 
@@ -730,15 +735,19 @@ plt.show()</code></pre>
           <button class="btn-copy" onclick="copyCode('code-4')">⧉ Copy</button>
         </div>
       </div>
-      <div class="card-desc">Download and load the Iris Flower Dataset directly via URL using <code>pd.read_csv()</code> and preview with <code>.head()</code>.</div>
-      <pre><code id="code-4" class="language-python">import pandas as pd
+      <div class="card-desc">Download and load the Iris Flower Dataset via URL. Prints first 5 rows, shape, missing values, and a full statistical summary.</div>
+      <pre><code id="code-4" class="language-python">import numpy as np
+import pandas as pd
 
 url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv"
 df = pd.read_csv(url)
 
-print("Dataset: Iris Flower Dataset")
-print("Source:", url)
-print(df.head())</code></pre>
+print("Dataset: Iris Flower Dataset (150 rows, 5 columns of sepal/petal measurements for 3 species)")
+print("Source URL:", url)
+print("\nFirst 5 rows:\n", df.head())
+print("\nShape:", df.shape)
+print("\nMissing values:\n", df.isnull().sum())
+print("\nSummary:\n", df.describe())</code></pre>
     </div>
 
     <!-- PRACTICAL 5 -->
