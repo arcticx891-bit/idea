@@ -1,0 +1,17 @@
+import matplotlib.pyplot as plt
+
+x = [1, 2, 3]
+y = [10, 20, 15]
+labels = ['A', 'B', 'C']
+
+plt.plot(x, y)
+plt.show()
+
+plt.bar(labels, y)
+plt.show()
+
+plt.scatter(x, y)
+plt.show()
+
+plt.pie(y, labels=labels)
+plt.show()

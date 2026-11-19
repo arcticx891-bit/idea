@@ -1,0 +1,28 @@
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+iris = load_iris()
+X, y = iris.data, iris.target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25)
+
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+cm = confusion_matrix(y_test, y_pred)
+tp = np.diag(cm)
+fp = cm.sum(axis=0) - tp
+fn = cm.sum(axis=1) - tp
+tn = cm.sum() - (tp + fp + fn)
+acc = accuracy_score(y_test, y_pred)
+
+print("Confusion Matrix:\n", cm)
+print("TP:", tp, "FP:", fp, "TN:", tn, "FN:", fn)
+print("Accuracy:", acc)
+print("Error Rate:", 1 - acc)
+print("Precision:", precision_score(y_test, y_pred, average='macro'))
+print("Recall:", recall_score(y_test, y_pred, average='macro'))

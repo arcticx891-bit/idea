@@ -1,0 +1,16 @@
+import pandas as pd
+
+cols = ['ID', 'Name', 'Age', 'Gender', 'Grade', 'Location']
+data = [[1, 'Amit', 21, 'M', 'A', 'Nashik'],
+        [2, 'Riya', 23, 'F', 'B', 'Pune']]
+
+df = pd.DataFrame(data, columns=cols)
+
+df.loc[2] = [3, 'Raj', 24, 'M', 'A', 'Mumbai']
+df = df.drop(0)
+
+print("Age > 22:\n", df[df['Age'] > 22])
+
+df2 = pd.DataFrame([[4, 'Neha', 22, 'F', 'A', 'Nashik']], columns=cols)
+df = pd.concat([df, df2])
+print("\nFinal Table:\n", df)

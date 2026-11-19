@@ -1,0 +1,15 @@
+import matplotlib.pyplot as plt
+
+hours = [1, 2, 3, 4]
+
+plt.scatter(hours, [10, 20, 30, 40])
+plt.title("Positive Correlation")
+plt.show()
+
+plt.scatter(hours, [40, 30, 20, 10])
+plt.title("Negative Correlation")
+plt.show()
+
+plt.scatter(hours, [20, 40, 15, 35])
+plt.title("Zero Correlation")
+plt.show()
