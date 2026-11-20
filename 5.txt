@@ -7,10 +7,13 @@ Y = [20, 28, 35, 43, 52]
 model = LinearRegression()
 model.fit(X, Y)
 
-print("Prediction for 7:", model.predict([[7]]))
-print("Slope:", model.coef_)
+print("Prediction for 7:", model.predict([[7]])[0])
+print("Slope:", model.coef_[0])
 print("Intercept:", model.intercept_)
 
-plt.scatter(X, Y)
-plt.plot(X, model.predict(X))
+plt.scatter(X, Y, color='blue')
+plt.plot(X, model.predict(X), color='red')
+plt.xlabel("Advertising Expenditure")
+plt.ylabel("Company Sales")
+plt.title("Advertising vs Sales")
 plt.show()
